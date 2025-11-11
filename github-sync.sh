@@ -4,6 +4,7 @@ set -e
 
 UPSTREAM_REPO=$1
 BRANCH_MAPPING=$2
+CUSTOM_ORIGIN_SERVER=$3
 
 if [[ -z "$UPSTREAM_REPO" ]]; then
   echo "Missing \$UPSTREAM_REPO"
@@ -23,13 +24,18 @@ then
   echo "Now: $UPSTREAM_REPO"
 fi
 
+if [[ -z "$CUSTOM_ORIGIN_SERVER" ]]; then
+  CUSTOM_ORIGIN_SERVER="github.com"
+fi
+
 echo "UPSTREAM_REPO=$UPSTREAM_REPO"
 echo "BRANCHES=$BRANCH_MAPPING"
+echo "ORIGIN_SERVER=$CUSTOM_ORIGIN_SERVER"
 
 git config --unset-all http."https://github.com/".extraheader || :
 
-echo "Resetting origin to: https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY"
-git remote set-url origin "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY"
+echo "Resetting origin to: https://$GITHUB_ACTOR:$GITHUB_TOKEN@$CUSTOM_ORIGIN_SERVER/$GITHUB_REPOSITORY"
+git remote set-url origin "https://$GITHUB_ACTOR:$GITHUB_TOKEN@$CUSTOM_ORIGIN_SERVER/$GITHUB_REPOSITORY"
 
 echo "Adding tmp_upstream $UPSTREAM_REPO"
 git remote add tmp_upstream "$UPSTREAM_REPO"

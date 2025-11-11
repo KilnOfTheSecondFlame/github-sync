@@ -17,6 +17,9 @@ inputs:
   github_token:
     description: GitHub token secret
     required: true
+  custom_origin:
+    description: If another server instead of github.com is used for this action
+    required: false
   sync_tags:
     description: Should tags also be synced
     required: false
@@ -29,3 +32,4 @@ runs:
   args:
     - ${{ inputs.source_repo }}
     - ${{ inputs.source_branch }}:${{ inputs.destination_branch }}
+    - ${{ inputs.custom_origin }}
